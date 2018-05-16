@@ -10,3 +10,7 @@ sed -i "s@#UseDNS yes@UseDNS no@" /etc/ssh/sshd_config
 sed -i 's/.*LogLevel.*/LogLevel DEBUG/g' /etc/ssh/sshd_config
 sed -i 's@#MaxStartups 10@MaxStartups 50@g' /etc/ssh/sshd_config
 systemctl reload sshd
+
+
+shell获取某个时间段的nginx日志内容
+cat web.log | egrep "01/Apr/2014" | sed  -n '/21:31:36/,/21:50:08/p'  
