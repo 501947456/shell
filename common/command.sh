@@ -39,3 +39,30 @@ expect eof
 运行方式
 expect  sshkey_deploy 192.168.1.186 xxxx
 
+
+#######AWK Nginx################
+统计IP访问次数
+awk '{a[$NF]++}END{for(i in a) print a[i],i}' b09tcusk8qcy.access.log.2018-10-29
+
+#统计访问次数大于100次的IP
+
+awk '{a[$NF]++}END{for (i in a){if(a[i]>=100)print i,a[i]}}' b09tcusk8qcy.access.log.2018-10-29 
+
+#统计访问IP次数并排序前10
+awk '{a[$NF]++}END{for(i in a)print i,a[i] |"sort -k2 -nr|head -10"}' b09tcusk8qcy.access.log.2018-10-29 
+
+#统计时间段访问次数最多的IP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
