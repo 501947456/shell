@@ -69,9 +69,11 @@ awk '{a[$7]++;size[$7]+=$10}END{for(v in a)print a[v],v,size[v]}' access.log
 
 awk '{if($9~/404/)a[$1" "$9]++}END{for(i in a)print v,a[v]}' access.log
 
+awk '/aa/{print $0" YES";next}{print $0" YES NO"}' file 
 
-
-
+ awk '/aa/{print $0" YES"}!/aa/{print $0" YES NO"}' file
+ 
+ cat file | awk '/^Pack.*Hello.*/{a=1}/^Owner/&&a{b=$0}END{if(b)print b}1'
 
 
 
