@@ -52,7 +52,22 @@ awk '{a[$NF]++}END{for (i in a){if(a[i]>=100)print i,a[i]}}' b09tcusk8qcy.access
 awk '{a[$NF]++}END{for(i in a)print i,a[i] |"sort -k2 -nr|head -10"}' b09tcusk8qcy.access.log.2018-10-29 
 
 #统计时间段访问次数最多的IP
+awk '$4>="[29/Oct/2018:05:16:05" && $4<="[29/Oct/2018:21:16:05"{a[$NF]++}END{for(v in a)print v,a[v]}' b09tcusk8qcy.access.log.2018-10-29
 
+
+#统计上一分钟访问量
+
+date=$(date -d '-1 minute' +%d%d%Y:%H:%M)
+awk -vdate=$date '{$4~date{c++}END{print c}}' access.log
+
+#统计访问最多的十个页面
+awk '{a[$7]++}END{for(v in a)print v,a[v] |"sort -k1 -nr |head -n10"}'  access.log
+
+#统计每个URL数量和返回内容总大小
+awk '{a[$7]++;size[$7]+=$10}END{for(v in a)print a[v],v,size[v]}' access.log
+#统计访问IP是404状态次数
+
+awk '{if($9~/404/)a[$1" "$9]++}END{for(i in a)print v,a[v]}' access.log
 
 
 
