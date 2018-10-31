@@ -75,9 +75,15 @@ awk '/aa/{print $0" YES";next}{print $0" YES NO"}' file
  
  cat file | awk '/^Pack.*Hello.*/{a=1}/^Owner/&&a{b=$0}END{if(b)print b}1'
 
+＃数组去重
+cat file | awk 'BEGIN{FS=OFS="|"}a[$2]++{$2=""}1'
+＃字符串拼接
+awk file '!/lib/{a=$0" "a}/lib/{print $0,a;a=""}'
 
+awk file '!/lib/{a=$0" "a;next}/lib/{$0=$0" "a;a=" "}1'
 
-
+#循环
+echo "axb{sfxcxe}dxe{dfefx2xfxf}sdxfdfd" | awk 'BEGIN{OFS=FS=""}{for(i=0;i<NF;i++){if($i=="{"){a=1}if($i=="}"){a=0}if(a&&$i=="x"){$i=";"}}}1'
 
 
 
