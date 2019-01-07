@@ -86,6 +86,14 @@ awk file '!/lib/{a=$0" "a;next}/lib/{$0=$0" "a;a=" "}1'
 echo "axb{sfxcxe}dxe{dfefx2xfxf}sdxfdfd" | awk 'BEGIN{OFS=FS=""}{for(i=0;i<NF;i++){if($i=="{"){a=1}if($i=="}"){a=0}if(a&&$i=="x"){$i=";"}}}1'
 
 
+sed 格式化输出df -h
+df -h|sed '1d;/ /!N;s/\n//;s/ \+/ /;'
 
+1d——————删除第一行
+/ /!N——————没有空格的行执行N
+例子中没有空格的行
+/dev/mapper/vg_dsidealyy-lv_root/dev/mapper/vg_dsidealyy-lv_home
+s/\n//——————pattern空间内的换行替换为空格
+s/ \+/ /——————N多空格替换为一个空格
 
 
