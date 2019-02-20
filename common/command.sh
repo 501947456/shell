@@ -96,4 +96,5 @@ df -h|sed '1d;/ /!N;s/\n//;s/ \+/ /;'
 s/\n//——————pattern空间内的换行替换为空格
 s/ \+/ /——————N多空格替换为一个空格
 
-
+####修改主机名
+ifconfig | grep "inet addr" |egrep -v "127|172" |awk '{print $2}' | awk -F"addr:" '{print $2}' |awk -F'.' '{print "web""-"$1"-"$2"-"$3"-"$4"-admin.com"}'
