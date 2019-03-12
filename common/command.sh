@@ -98,3 +98,30 @@ s/ \+/ /——————N多空格替换为一个空格
 
 ####修改主机名
 ifconfig | grep "inet addr" |egrep -v "127|172" |awk '{print $2}' | awk -F"addr:" '{print $2}' |awk -F'.' '{print "web""-"$1"-"$2"-"$3"-"$4"-admin.com"}'
+
+方式一：创建子shell,在子shell中运行ssh-agent,退出子shell 自动结束代理
+ssh-agent $SHELL
+
+方式二： 单独启动一个代理进程，退出当前shell时最好使用ssh-agent -k 关闭对应代理
+eval `ssh-agent`
+
+关闭ssh-agent 
+ssh-agent -k pid
+
+将私钥添加到ssh代理
+ssh-add ~/.ssh/key_name
+
+查看代理中的私钥
+ssh-add -l
+
+查看代理中的私钥对应的公钥
+ssh-add -L
+
+移除指定的私钥
+ssh-add -d /path/key_name
+
+移除代理中的所有私钥
+ssh-add -D
+ 
+
+
