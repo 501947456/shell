@@ -1,6 +1,7 @@
 #设置终端显示
 echo -e "export PS1='[\u@192.168.8.145 \W]\\$ '"  >> /etc/profile
  ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=30  192.168.1.x
+ ssh -o StrictHostKeyChecking=no -p 22 $remote_ip "mkdir -p /data/cross/;chmod -R 777 /data/cross/"
 
 
 #禁用密码登录
@@ -123,5 +124,94 @@ ssh-add -d /path/key_name
 移除代理中的所有私钥
 ssh-add -D
  
+#echo 文字显示颜色
+echo -e "\033[1;31m 无法连接${test_ip}，脚本退出 \033[0m"
+echo -e "\033[1;32m ${test_ip}连接成功 \033[0m "
+
+#shell交互
+
+function verify {
+while true;do
+read -p "是否确认?[y/n]" ACK
+case $ACK in
+        y|Y|yes|YES) 
+                break
+                ;;
+          n|N|no|NO)
+                exit
+                ;;
+                  *)
+                echo "Please Enter y/yes/Y/YES or n/no/N/NO."
+                ;;
+esac
+done
+}
+
+#rsync
+	rsync -avz --delete --exclude='.svn/' -e "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=60"  /data/cross/$sid $remote_ip:/data/cross/
+	num=`rsync -avn --delete --exclude='.svn/' -e "ssh -o StrictHostKeyChecking=no -o ConnectTimeout=60" /data/hefu/${Sid}/* $remote_ip:/root/hefu/$Sid/table/|grep -v ^sending|grep -v ^sent|grep -v ^total|grep -v ^$|grep -v "^./$"`
+
+
+#tee 追加记录日志
+bak_log $@ |tee -a /root/hefu/log/$today/bak/${2}_bak_scp2.log
+
+
+#case
+
+function check_hefu {
+case $role_game in
+ "shushan")
+	echo -e "=============================================================="
+	echo -e "当前分配阵营:  \\033[20G 蜀山 \033[0m"
+	echo -e "当前区服主库IP:  \\033[20G ${db1_ser_innerip}\033[0m"
+	echo -e "当前区服标记:  \\033[20G ${ser_flag}\033[0m"
+	echo -e "=============================================================="
+ 	
+ ;;
+ "penglai")
+	echo -e "=============================================================="
+	echo -e "当前分配阵营:  \\033[20G 蓬莱 \033[0m"
+	echo -e "当前区服主库IP:  \\033[20G ${db1_ser_innerip}\033[0m"
+	echo -e "当前区服标记:  \\033[20G ${ser_flag}\033[0m"
+	echo -e "=============================================================="
+ 	
+ ;;
+ "kunlun")
+ 	echo -e "=============================================================="
+	echo -e "当前分配阵营:  \\033[20G 昆仑 \033[0m"
+	echo -e "当前区服主库IP:  \\033[20G ${db1_ser_innerip}\033[0m"
+	echo -e "当前区服标记:  \\033[20G ${ser_flag}\033[0m"
+	echo -e "=============================================================="
+ 	
+ ;;
+ *)
+ 	echo "Usage:sh `basename $0` [合服服务器IP] [ser_id] [shushan|penglai|kunlun] [1|2]"
+ 	echo -e "Example:sh `basename $0` 119.145.254.106 andrHF1_S13 1 \n"
+ 	exit 1
+ ;;
+esac
+
+}
+
+
+#for 循环
+
+for remote_ip in {$op_center,$center,$touxiang_IP,$cross_IP}
+do
+ssh=`ssh -o stricthostkeychecking=no ${remote_ip} "ls /"`
+if [[ -z "${ssh}" ]];then
+	echo -e "\033[1;31m 无法连接${remote_ip}，脚本退出 \033[0m"
+	exit 1
+else
+	echo -e "\033[1;32m ${remote_ip}连接成功 \033[0m "
+fi
+done
+
+
+
+
+
+
+
 
 
