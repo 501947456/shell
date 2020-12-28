@@ -1,3 +1,5 @@
+http://grokdebug.herokuapp.com/
+
 USERNAME [a-zA-Z0-9._-]+
 USER %{USERNAME}
 INT (?:[+-]?(?:[0-9]+))
